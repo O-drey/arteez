@@ -13,7 +13,12 @@ app.get("/", (req, res) => {
   res.send("Hello World!")
 })
 
-app.use(cors({ origin: process.env.PORT_FRONTEND_DEV }))
+app.use(
+  cors({
+    origin: process.env.PORT_FRONTEND_DEV ?? FRONTEND_PROD,
+    credentials: true,
+  })
+)
 app.use(json())
 app.use(urlencoded({ extended: false }))
 
@@ -64,3 +69,5 @@ app.listen(port, () => {
 
   console.log(autoCropUrl)
 })()
+
+module.exports = app
