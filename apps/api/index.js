@@ -70,4 +70,4 @@ app.listen(port, () => {
   console.log(autoCropUrl)
 })()
 
-module.exports = app
+export default app
