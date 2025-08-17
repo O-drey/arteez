@@ -2,29 +2,29 @@
   "data": [
     {
       "id": 1,
-      "firtsname": "Audrey",
+      "firstname": "Audrey",
       "lastname": "C",
-      "email":"audrey@email.com",
-      "password":"1234",
+      "email": "audrey@email.com",
+      "password": "1234",
       "dob": "01-01-2000",
       "favorites_artworks": ["art_1", "art_2", "art_3"],
       "bio": "firt bio ever"
     },
     {
       "id": 2,
-      "firtsname": "Leo",
+      "firstname": "Leo",
       "lastname": "P",
-      "email":"leo@email.com",
-      "password":"5678",
+      "email": "leo@email.com",
+      "password": "5678",
       "dob": "02-02-2000",
       "favorites_artworks": ["art_2", "art_3"]
     },
     {
       "id": 3,
-      "firtsname": "Ash",
+      "firstname": "Ash",
       "lastname": "Z",
-      "email":"ash@email.com",
-      "password":"91011",
+      "email": "ash@email.com",
+      "password": "91011",
       "dob": "03-03-2000",
       "favorites_artworks": []
     }
