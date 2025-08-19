@@ -2,8 +2,8 @@ import "dotenv/config"
 import express, { json, urlencoded } from "express"
 import createError from "http-errors"
 import cors from "cors"
-// import { MongoClient, ServerApiVersion } from "mongodb"
-import { PrismaClient } from "./generated/prisma/index.js"
+import { PrismaClient } from "@prisma/client"
+// import { PrismaClient } from "./generated/prisma/index.js"
 // import { cloudinaryConnection } from "../api/fetch/fetchCloudinary.js"
 
 import usersRouter from "./routes/users.js"
@@ -35,38 +35,10 @@ app.listen(port, () => {
 })
 // await cloudinaryConnection
 
-const uri = process.env.MONGO_URI
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-// const client = new MongoClient(uri, {
-//   serverApi: {
-//     version: ServerApiVersion.v1,
-//     strict: true,
-//     deprecationErrors: true,
-//   },
-// })
-
-// async function run() {
-//   try {
-//     // Connect the client to the server	(optional starting in v4.7)
-//     await client.connect()
-//     // Send a ping to confirm a successful connection
-//     await client.db("admin").command({ ping: 1 })
-//     console.log(
-//       "Pinged your deployment. You successfully connected to MongoDB!"
-//     )
-//   } finally {
-//     // Ensures that the client will close when you finish/error
-//     await client.close()
-//   }
-// }
-// run().catch(console.dir)
-
 const prisma = new PrismaClient()
 
 async function main() {
   try {
-    // Vérifier si l'utilisateur existe déjà
     const existingUser = await prisma.user.findUnique({
       where: { email: "rich@prisma.com" },
     })
