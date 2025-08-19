@@ -1,0 +1,34 @@
+{
+  "data": [
+    {
+      "id": "art_1",
+      "imgs": [
+        "https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg"
+      ],
+      "title": "Titre œuvre 1",
+      "author": ["author_1"],
+      "date": null,
+      "annotation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi velit, venenatis quis sem ac, tincidunt rhoncus tellus. Etiam eget malesuada neque. Etiam aliquam, nisi sed hendrerit dapibus, dui ante ultricies est, vestibulum lobortis ante turpis sed erat. Vivamus non tincidunt purus. Aenean fermentum leo at nibh venenatis pulvinar. Suspendisse elementum, magna feugiat ullamcorper lacinia, neque eros egestas dolor, ac consectetur est mi non nibh. Nam consectetur sapien sed augue iaculis lobortis. Aliquam erat volutpat. Praesent facilisis efficitur urna vitae feugiat. Suspendisse sodales arcu a enim egestas porttitor. Nulla arcu nibh, varius ac mollis id, volutpat sit amet magna. Donec ultrices massa nec ex iaculis, ac tincidunt nulla porta. Aenean et hendrerit velit. Vivamus finibus convallis nisl. Mauris nec nisl fringilla, malesuada dolor a, ultrices erat."
+    },
+    {
+      "id": "art_2",
+      "imgs": [
+        "https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg"
+      ],
+      "title": "Titre œuvre 2",
+      "author": ["author_1", "author_2"],
+      "date": null,
+      "annotation": "Proin efficitur lacinia quam, a ullamcorper sapien mollis ut. Praesent tincidunt lacinia ante ac egestas. Suspendisse ipsum felis, maximus ac dolor quis, ultrices eleifend nunc. Cras eu nunc tristique, mollis dui id, suscipit justo. Curabitur tincidunt ut enim quis faucibus. Sed pharetra velit in orci pulvinar, auctor finibus diam gravida. In sit amet ante ac arcu suscipit congue a volutpat justo. Phasellus blandit a sem gravida mattis. Ut quis mi id arcu venenatis elementum non at velit."
+    },
+    {
+      "id": "art_3",
+      "imgs": [
+        "https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg"
+      ],
+      "title": "Titre œuvre 3",
+      "author": ["author_3"],
+      "date": null,
+      "annotation": ""
+    }
+  ]
+}
