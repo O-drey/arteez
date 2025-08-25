@@ -12,19 +12,24 @@ export const userMethods = () => {
   }
 
   const create = async (datas) => {
+    console.log("POST users datas : ", datas)
     const { data } = await httpServer.post("/users", datas)
+    console.log("POST users data : ", data)
     return data
   }
 
-  const edit = async (datas) => {
+  const update = async (datas) => {
+    console.log("PATCH users datas : ", datas)
+    const { id } = datas
     const { data } = await httpServer.patch(`/users/${id}`, datas)
+    console.log("PATCH users data : ", data)
     return data
   }
 
-  const del = async () => {
+  const del = async (id) => {
     const { data } = await httpServer.delete(`/users/${id}`)
     return data
   }
 
-  return { list, retrieve, create, edit, del }
+  return { list, retrieve, create, update, del }
 }

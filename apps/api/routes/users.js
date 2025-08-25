@@ -1,62 +1,83 @@
 import { Router } from "express"
-import { readFileSync } from "fs"
-import { fileURLToPath } from "url"
-import { dirname, join } from "path"
-
-// Obtenir le chemin du fichier actuel en ES6
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+import { artsCollectionsMethods } from "../controllers/collections.controllers.js"
 
 const router = Router()
-// Lire le fichier JSON avec le chemin correct
-const { data: usersData } = JSON.parse(
-  readFileSync(join(__dirname, "../data/users.json"), "utf8")
-)
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const data = res.json(usersData)
+    const { list } = artsCollectionsMethods()
+    const data = await list()
+    res.json({ data })
     return data
   } catch (error) {
     console.dir(error)
+    res.status(500).json({ message: "Erreur serveur" })
   }
 })
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const userId = parseInt(req.params.id)
-    const user = usersData.find((u) => u.id === userId)
+    const { id } = req.params
+    const { retrieve } = artsCollectionsMethods()
+    const data = await retrieve(id)
 
-    if (!user) {
-      return res.status(404).json({ error: "Utilisateur introuvable" })
+    if (!data) {
+      return res.status(404).json({ message: "Utilisateur introuvable" })
     }
-    res.json(user)
+    res.json({ data })
+    return data
   } catch (error) {
     console.dir(error)
+    res.status(500).json({ message: "Erreur serveur" })
   }
 })
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    const { firstname, lastname, username, email, password, dob } = req.body
+    console.log("API POST users : req.body : ", req.body)
+    const { firstname, lastname, username, email, password } = req.body
 
     const newUser = {
-      id: usersData.length + 1,
       firstname,
       lastname,
       username,
       email,
       password,
-      dob,
-      favorite_artworks: [],
     }
-    
-    usersData.push(newUser)
-    console.log(usersData)
-    res.status(201).json(newUser)
 
+    const { create } = artsCollectionsMethods()
+    const data = await create(newUser)
+    res.status(201).json(data)
   } catch (error) {
     console.dir(error)
+    res.status(500).json({ message: "Erreur serveur" })
+  }
+})
+
+router.patch("/:id", async (req, res) => {
+  try {
+    const { update } = artsCollectionsMethods()
+    const data = await update(req.body)
+    console.log(data)
+    res.json(data)
+  } catch (error) {
+    console.dir(error)
+    res.status(500).json({ message: "Erreur serveur" })
+  }
+})
+
+router.delete("/:id", async (req, res) => {
+  console.log("req.params.id :", req.params.id)
+  const { id } = req.params
+
+  try {
+    const { del } = artsCollectionsMethods()
+    const data = del(id)
+    console.log("data", data)
+    res.json({ message: "Utilisateur supprimé !", data })
+  } catch (error) {
+    console.dir(error)
+    res.status(500).json({ message: "Erreur serveur" })
   }
 })
 

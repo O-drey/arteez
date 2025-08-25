@@ -1,21 +1,14 @@
 import { Router } from "express"
-import { readFileSync } from "fs"
-import { dirname, join } from "path"
-import { fileURLToPath } from "url"
-
-// Obtenir le chemin du fichier actuel en ES6
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+import { artsCollectionsMethods } from "../controllers/collections.controllers.js"
 
 const router = Router()
-// Lire le fichier JSON avec le chemin correct
-const { data: collectionsData } = JSON.parse(
-  readFileSync(join(__dirname, "../data/collections.json"), "utf8")
-)
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const data = res.json(collectionsData)
+    const { list } = artsCollectionsMethods()
+    const data = await list()
+    console.log("GET all arts collections", data)
+    res.json(data)
     return data
   } catch (error) {
     console.dir(error)
@@ -23,25 +16,26 @@ router.get("/", (req, res) => {
 })
 
 router.get("/:id", (req, res) => {
+  const { id } = req.params
   try {
-    const collectionId = req.params.id
-    const collection = collectionsData.find((u) => u.id === collectionId)
-
-    if (!collection) {
+    const { retrieve } = artsCollectionsMethods()
+    const data = retrieve(id)
+    if (!data) {
       return res.status(404).json({ error: "Œuvre introuvable" })
     }
-    res.json(collection)
+
+    console.log("GET art collection", data)
+    res.json(data)
   } catch (error) {
     console.dir(error)
   }
 })
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { title, user, isPrivate, cover, arts } = req.body
 
     const newCollection = {
-      id: collectionsData.length + 1,
       title,
       user,
       isPrivate,
@@ -49,11 +43,47 @@ router.post("/", (req, res) => {
       arts,
     }
 
-    collectionsData.push(newCollection)
-    console.log(collectionsData)
-    res.status(201).json(newCollection)
+    const { create } = artsCollectionsMethods()
+    const data = await create(newCollection)
+    console.log(data)
+    res.status(201).json(data)
   } catch (error) {
     console.dir(error)
+  }
+})
+
+router.patch("/:id", async (req, res) => {
+  const { id } = req.params
+  try {
+    const { title, cover, arts, isPrivate } = req.body
+
+    const collectionUpdates = {
+      title,
+      cover,
+      arts,
+      isPrivate,
+    }
+
+    const { update } = artsMethods()
+    const data = await update({ ...collectionUpdates, id })
+    console.log(data)
+    res.json(data)
+  } catch (error) {
+    console.dir(error)
+    res.status(500).json({ message: "Erreur serveur" })
+  }
+})
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params
+  try {
+    const { del } = artsCollectionsMethods()
+    const data = del(id)
+    console.log("collection supprimée")
+    res.json({ message: "Collection supprimée !", data })
+  } catch (error) {
+    console.dir(error)
+    res.status(500).json({ message: "Erreur serveur" })
   }
 })
 

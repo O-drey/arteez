@@ -1,47 +1,38 @@
 import { Router } from "express"
-import { readFileSync } from "fs"
-import { dirname, join } from "path"
-import { fileURLToPath } from "url"
 
-// Obtenir le chemin du fichier actuel en ES6
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+import { artsMethods } from "../controllers/arts.controllers.js"
 
 const router = Router()
-// Lire le fichier JSON avec le chemin correct
-const { data: artsData } = JSON.parse(
-  readFileSync(join(__dirname, "../data/arts.json"), "utf8")
-)
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const data = res.json(artsData)
-    return data
+    const { list } = artsMethods()
+    const data = await list()
+    res.json(data)
   } catch (error) {
     console.dir(error)
   }
 })
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const artId = req.params.id
-    const art = artsData.find((u) => u.id === artId)
-
-    if (!art) {
+    const { id } = req.params
+    const { retrieve } = artsMethods()
+    const data = await retrieve(id)
+    if (!data) {
       return res.status(404).json({ error: "Œuvre introuvable" })
     }
-    res.json(art)
+    res.json(data)
   } catch (error) {
     console.dir(error)
   }
 })
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { title, author, date, annotation, imgs } = req.body
 
     const newArt = {
-      id: artsData.length + 1,
       title,
       author,
       date,
@@ -49,11 +40,37 @@ router.post("/", (req, res) => {
       imgs,
     }
 
-    artsData.push(newArt)
-    console.log(artsData)
-    res.status(201).json(newArt)
+    const { create } = artsMethods()
+    const data = await create(newArt)
+    console.log(data)
+    res.status(201).json(data)
   } catch (error) {
     console.dir(error)
+  }
+})
+
+router.patch("/:id", async (req, res) => {
+  try {
+    const { update } = artsMethods()
+    const data = await update(req.body)
+    console.log(data)
+    res.json(data)
+  } catch (error) {
+    console.dir(error)
+    res.status(500).json({ message: "Erreur serveur" })
+  }
+})
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params
+  try {
+    const { del } = artsMethods()
+    const data = del(id)
+    console.log("œuvre supprimée")
+    res.json({ message: "œuvre supprimée !", data })
+  } catch (error) {
+    console.dir(error)
+    res.status(500).json({ message: "Erreur serveur" })
   }
 })
 

@@ -39,25 +39,6 @@ const prisma = new PrismaClient()
 
 async function main() {
   try {
-    const existingUser = await prisma.user.findUnique({
-      where: { email: "rich@prisma.com" },
-    })
-
-    if (existingUser) {
-      console.log("Utilisateur existe déjà:", existingUser)
-      return
-    }
-
-    await prisma.user.create({
-      data: {
-        firstname: "Rich",
-        lastname: "Dupont",
-        email: "rich@prisma.com",
-        password: "123abc",
-        username: "rich_rich",
-        bio: "Hello je suis Rich… et pauvre.",
-      },
-    })
     const allUsers = await prisma.user.findMany()
     console.log("allUsers : ", allUsers)
   } catch (error) {

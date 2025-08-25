@@ -8,5 +8,5 @@ export const httpServer = axios.create({
   },
   timeout: 5000,
   timeoutErrorMessage: "Temps de chargement excédé, rechargez la page",
-  withCredentials: true,
+  // withCredentials: true,
 })

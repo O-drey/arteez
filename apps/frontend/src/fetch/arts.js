@@ -16,7 +16,7 @@ export const artsMethods = () => {
     return data
   }
 
-  const edit = async (datas) => {
+  const update = async (datas) => {
     const { data } = await httpServer.patch(`/arts/${id}`, datas)
     return data
   }
@@ -26,5 +26,5 @@ export const artsMethods = () => {
     return data
   }
 
-  return { list, retrieve, create, edit, del }
+  return { list, retrieve, create, update, del }
 }
