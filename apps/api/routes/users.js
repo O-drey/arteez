@@ -1,11 +1,11 @@
 import { Router } from "express"
-import { artsCollectionsMethods } from "../controllers/collections.controllers.js"
+import { usersMethods } from "../controllers/users.controllers.js"
 
 const router = Router()
 
 router.get("/", async (req, res) => {
   try {
-    const { list } = artsCollectionsMethods()
+    const { list } = usersMethods()
     const data = await list()
     res.json({ data })
     return data
@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params
-    const { retrieve } = artsCollectionsMethods()
+    const { retrieve } = usersMethods()
     const data = await retrieve(id)
 
     if (!data) {
@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
       password,
     }
 
-    const { create } = artsCollectionsMethods()
+    const { create } = usersMethods()
     const data = await create(newUser)
     res.status(201).json(data)
   } catch (error) {
@@ -56,7 +56,7 @@ router.post("/", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
   try {
-    const { update } = artsCollectionsMethods()
+    const { update } = usersMethods()
     const data = await update(req.body)
     console.log(data)
     res.json(data)
@@ -71,7 +71,7 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params
 
   try {
-    const { del } = artsCollectionsMethods()
+    const { del } = usersMethods()
     const data = del(id)
     console.log("data", data)
     res.json({ message: "Utilisateur supprimé !", data })

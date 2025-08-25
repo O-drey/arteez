@@ -1,4 +1,4 @@
-import "./App.css"
+import "./index.css"
 import { Link } from "react-router"
 import { UsersPage } from "./components/pages/UsersPage"
 import { UIHeader } from "./components/UI/UIHeader"

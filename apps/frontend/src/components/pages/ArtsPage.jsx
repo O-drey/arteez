@@ -1,3 +1,10 @@
+import { ImagePage } from "./ImagePage"
+
 export function ArtsPage() {
-  return <h1>Arts page</h1>
+  return (
+    <div>
+      <h1>Arts page</h1>
+      <ImagePage />
+    </div>
+  )
 }
