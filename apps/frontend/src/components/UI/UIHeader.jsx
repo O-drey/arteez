@@ -9,12 +9,14 @@ export const UIHeader = () => {
   ]
 
   return (
-    <div>
-      {menu.map(({ name, to }, index) => (
-        <Link key={index} to={to}>
-          {name}
-        </Link>
-      ))}
-    </div>
+    <header>
+      <nav className="flex items-center gap-4">
+        {menu.map(({ name, to }, index) => (
+          <Link key={index} to={to}>
+            {name}
+          </Link>
+        ))}
+      </nav>
+    </header>
   )
 }

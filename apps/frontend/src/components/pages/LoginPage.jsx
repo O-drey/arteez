@@ -1,18 +1,10 @@
 import { Link } from "react-router"
 import { redirect } from "react-router"
+import { UIInput } from "../UI/UIInput"
 import loginImg from "../../assets/login_img.webp"
-import { useState } from "react"
+import { UIButton } from "../UI/UIButton"
 
 export function LoginPage() {
-  const [seePassword, setSeePassword] = useState(false)
-
-  const handleSeePassword = (e) => {
-    e.preventDefault()
-    setSeePassword(!seePassword)
-  }
-
-  const labelStyle = "font-semibold flex flex-col gap-2 text-left"
-
   async function login(formData) {
     const username = formData.get("username")
     console.log(username)
@@ -30,6 +22,7 @@ export function LoginPage() {
     // }
 
     try {
+      if (!username || !password) return
       localStorage.setItem("Bearer", "123_456")
       redirect("/")
     } catch (err) {
@@ -40,32 +33,19 @@ export function LoginPage() {
     <div className="flex justify-between items-center">
       <form
         action={login}
-        className="border-2 bg-pink-50 p-6 flex flex-col gap-8 rounded-2xl max-w-1/2"
+        className="bg-pink-50 p-6 flex flex-col gap-8 rounded-2xl max-w-1/2"
       >
         <h1>Connectez-vous</h1>
 
-        <label htmlFor="username" className={labelStyle}>
-          <span>Nom utilisateur</span>
-          <input name="username" id="username" type="text" />
-        </label>
+        <UIInput id="username" name="username" label="Nom utilisateur" />
+        <UIInput
+          id="password"
+          name="password"
+          label="Mot de passe"
+          type="password"
+        />
 
-        <label htmlFor="password" className={labelStyle}>
-          <span>Mot de passe</span>
-          <input
-            name="password"
-            id="password"
-            type={seePassword ? "password" : "text"}
-          />
-          <button onClick={handleSeePassword}>Voir le mot de passe</button>
-        </label>
-
-        <button
-          type="submit"
-          value="submit"
-          className="primary-500 p-20 bg-pink-700 text-white"
-        >
-          Connexion
-        </button>
+        <UIButton type="submit" value="submit" label="Connexion" primary />
 
         <span>
           Vous n’avez pas encore de compte ?{" "}

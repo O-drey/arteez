@@ -8,6 +8,9 @@ import { UsersPage } from "../components/pages/UsersPage"
 import NotFoundPage from "../components/pages/NotFound"
 import { LoginPage } from "../components/pages/LoginPage"
 import { RegisterPage } from "../components/pages/RegisterPage"
+import { UserSettings } from "../components/pages/UserSettings"
+import { CollectionPage } from "../components/pages/CollectionPage"
+import { ArtPage } from "../components/pages/ArtPage"
 
 export const router = createBrowserRouter([
   {
@@ -29,13 +32,30 @@ export const router = createBrowserRouter([
   },
   {
     path: "/user/:id",
-
     Component: UserProfile,
+  },
+  {
+    path: "/user/:id/settings?",
+    Component: UserSettings,
   },
   {
     path: "/arts",
     children: [
       { index: true, Component: ArtsPage },
+      // { path: "settings", Component: ConcertsCity },
+    ],
+  },
+  {
+    path: "/art/:id",
+    children: [
+      { index: true, Component: ArtPage },
+      // { path: "settings", Component: ConcertsCity },
+    ],
+  },
+  {
+    path: "/collections/:id",
+    children: [
+      { index: true, Component: CollectionPage },
       // { path: "settings", Component: ConcertsCity },
     ],
   },

@@ -1,25 +1,17 @@
 import { usersHooks } from "../../hooks/usersHooks"
+import { useState } from "react"
 import { userMethods } from "../../fetch/users"
 import { redirect } from "react-router"
 import { Link } from "react-router"
-
+import { UIInput } from "../UI/UIInput"
 import loginImg from "../../assets/login_img.webp"
-import { useState } from "react"
 
 export function RegisterPage() {
-  const [seePassword, setSeePassword] = useState(false)
   const { userList } = usersHooks()
-  const { users, loading, error } = userList()
+  const { loading, error } = userList()
 
   if (loading) return <p>Chargement…</p>
   if (error) return <p>Erreur : {error.message}</p>
-
-  const labelStyle = "font-semibold flex flex-col gap-2 text-left"
-
-  const handleSeePassword = (e) => {
-    e.preventDefault()
-    setSeePassword(!seePassword)
-  }
 
   async function createUser(formData) {
     const firstname = formData.get("firstname")
@@ -45,70 +37,60 @@ export function RegisterPage() {
     }
 
     try {
-      if (
-        firstname.length === 0 ||
-        lastname.length === 0 ||
-        username.length === 0 ||
-        email.length === 0 ||
-        password.length === 0
-      ) {
-        return
-      } else {
-        const { create } = userMethods()
-        const data = await create(newUser)
-        redirect("/")
-        return data
-      }
+      if (!firstname || !lastname || !username || !email || !password) return
+
+      const { create } = userMethods()
+      const data = await create(newUser)
+      redirect("/")
+      return data
     } catch (err) {
       console.error("Erreur : ", err)
     }
   }
   return (
-    <div className="flex items-center justify-between">
-      <form action={createUser} className="flex flex-col gap-10 text-left">
+    <div className="flex items-start justify-between">
+      <form action={createUser} className="flex flex-col gap-10 max-w-1/2">
         <h1>Créez votre compte</h1>
         <fieldset className="flex flex-col gap-4">
-          <label htmlFor="firstname" className={labelStyle}>
-            <span>Prénom</span>
-            <input name="firstname" id="firstname" type="text" />
-          </label>
-          <label htmlFor="lastname" className={labelStyle}>
-            <span>Nom de famille</span>
-            <input name="lastname" id="lastname" type="text" />
-          </label>
-
-          <label htmlFor="username" className={labelStyle}>
-            <span>Nom utilisateur</span>
-            <input name="username" id="username" type="text" />
-          </label>
+          <UIInput
+            id="firstname"
+            name="firstname"
+            label="Prénom"
+            htmlFor="firstname"
+          />
+          <UIInput
+            id="lastname"
+            name="lastname"
+            label="Nom de famille"
+            htmlFor="lastname"
+          />
+          <UIInput
+            id="username"
+            name="username"
+            label="Nom utilisateur"
+            htmlFor="username"
+          />
         </fieldset>
         <fieldset className="flex flex-col gap-4">
-          <label htmlFor="email" className={labelStyle}>
-            <span>Email</span>
-            <input name="email" id="email" type="text" />
-          </label>
-          <label htmlFor="password" className={labelStyle}>
-            <span>Mot de passe</span>
-            <div>
-              <input
-                name="password"
-                id="password"
-                type={seePassword ? "text" : "password"}
-              />
-              <button onClick={handleSeePassword}>Voir le mot de passe</button>
-            </div>
+          <UIInput id="email" name="email" label="E-mail" htmlFor="email" />
+          <UIInput
+            id="password"
+            name="password"
+            label="Mot de passe"
+            htmlFor="password"
+            type="password"
+          />
 
-            <div>
-              Votre mot de passe doit contenir au minimum :
-              <ul className="list-disc">
-                <li>1 minuscule</li>
-                <li>1 Majuscule</li>
-                <li>1 chiffre (0-9)</li>
-                <li>1 caractère spécial (hors `~)</li>
-                <li>12 caractères</li>
-              </ul>
-            </div>
-          </label>
+          <div className="bg-blue-50 rounded-xl py-6 px-8">
+            Votre mot de passe doit contenir au minimum :
+            <ul className="list-disc">
+              <li>1 minuscule</li>
+              <li>1 Majuscule</li>
+              <li>1 chiffre (0-9)</li>
+              <li>1 caractère spécial (hors `~)</li>
+              <li>12 caractères</li>
+            </ul>
+          </div>
         </fieldset>
         <label htmlFor="accept-terms" className="flex gap-2 items-baseline">
           <input

@@ -1,12 +1,40 @@
 import { useState } from "react"
 
-const UIInput = ({ label, value, type }) => {
-  const [value, setValue] = useState()
+export const UIInput = ({ label, defaultValue, type, id, name, htmlFor }) => {
+  const inputStyle = "py-2 px-3 border-1 border-gray-800 rounded"
+  const labelStyle = "font-semibold flex flex-col gap-2"
+  const [seePassword, setSeePassword] = useState(false)
 
+  const handleSeePassword = (e) => {
+    e.preventDefault()
+    setSeePassword(!seePassword)
+  }
   return (
-    <label>
+    <label className={labelStyle} htmlFor={htmlFor}>
       <span>{label}</span>
-      <input type={type ?? "text"} value={value} on />
+
+      {type === "password" ? (
+        <div className="flex items-center border-1 border-gray-800 rounded">
+          <input
+            type={seePassword ? "text" : "password"}
+            defaultValue={defaultValue}
+            className="py-2 px-3 rounded-l w-full"
+            id={id}
+            name={name}
+          />
+          <button onClick={handleSeePassword} className="!rounded-l-none">
+            Voir
+          </button>
+        </div>
+      ) : (
+        <input
+          type={type ?? "text"}
+          defaultValue={defaultValue}
+          className={inputStyle}
+          id={id}
+          name={name}
+        />
+      )}
     </label>
   )
 }
