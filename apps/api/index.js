@@ -39,16 +39,39 @@ app.get("/", (req, res) => {
 // }
 
 const corsOptions = {
-  origin: [
-    process.env.NODE_ENV_FRONTEND_LOCAL,
-    process.env.LOCAL_API_URL,
-    process.env.NODE_ENV_FRONTEND_PROD,
-    "https://arteez-frontend-*.vercel.app",
-  ],
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true)
+
+    const allowed = [
+      process.env.NODE_ENV_FRONTEND_PROD,
+      process.env.NODE_ENV_FRONTEND_LOCAL,
+    ]
+
+    // Check exact matches
+    if (allowed.includes(origin)) return callback(null, true)
+
+    // Check preview pattern
+    if (/^https:\/\/arteez-frontend.*\.vercel\.app$/.test(origin)) {
+      return callback(null, true)
+    }
+
+    callback(null, false)
+  },
   credentials: true,
   methods: ["GET", "POST", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
 }
+// const corsOptions = {
+//   origin: [
+//     process.env.NODE_ENV_FRONTEND_LOCAL,
+//     process.env.LOCAL_API_URL,
+//     process.env.NODE_ENV_FRONTEND_PROD,
+//     "https://arteez-frontend-*.vercel.app",
+//   ],
+//   credentials: true,
+//   methods: ["GET", "POST", "PATCH", "DELETE"],
+//   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+// }
 
 app.use(cors(corsOptions))
 app.use(json())
