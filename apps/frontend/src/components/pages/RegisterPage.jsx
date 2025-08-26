@@ -1,14 +1,15 @@
 import { usersHooks } from "../../hooks/usersHooks"
-import { useState } from "react"
 import { userMethods } from "../../fetch/users"
-import { redirect } from "react-router"
+import { useNavigate } from "react-router"
 import { Link } from "react-router"
 import { UIInput } from "../UI/UIInput"
 import loginImg from "../../assets/login_img.webp"
+import { UIButton } from "../UI/UIButton"
 
 export function RegisterPage() {
   const { userList } = usersHooks()
   const { loading, error } = userList()
+  const navigate = useNavigate()
 
   if (loading) return <p>Chargement…</p>
   if (error) return <p>Erreur : {error.message}</p>
@@ -41,7 +42,7 @@ export function RegisterPage() {
 
       const { create } = userMethods()
       const data = await create(newUser)
-      redirect("/")
+      navigate("/")
       return data
     } catch (err) {
       console.error("Erreur : ", err)
@@ -112,9 +113,7 @@ export function RegisterPage() {
           </span>
         </label>
 
-        <button type="submit" value="submit">
-          Créer mon compte
-        </button>
+        <UIButton type="submit" value="submit" label="Créer mon compte" />
 
         <span>
           Vous avez déjà un compte ?{" "}

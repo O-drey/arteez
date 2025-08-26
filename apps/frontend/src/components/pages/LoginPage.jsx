@@ -1,10 +1,13 @@
 import { Link } from "react-router"
 import { redirect } from "react-router"
+import { useNavigate } from "react-router"
 import { UIInput } from "../UI/UIInput"
 import loginImg from "../../assets/login_img.webp"
 import { UIButton } from "../UI/UIButton"
 
 export function LoginPage() {
+  const navigate = useNavigate()
+
   async function login(formData) {
     const username = formData.get("username")
     console.log(username)
@@ -24,7 +27,7 @@ export function LoginPage() {
     try {
       if (!username || !password) return
       localStorage.setItem("Bearer", "123_456")
-      redirect("/")
+      navigate("/")
     } catch (err) {
       console.error("Erreur : ", err)
     }

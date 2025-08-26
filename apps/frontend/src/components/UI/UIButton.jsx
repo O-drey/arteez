@@ -17,16 +17,14 @@ export const UIButton = ({
       to={href}
       className={[
         btnStyle,
-        (
-          primary
-            ? "bg-primary-600 border-primary-600 hover:bg-pink-700 hover:border-pink-700 text-white"
-            : secondary
-            ? "bg-pink-200 border-pink-200 hover:bg-pink-300 hover:border-pink-300"
-            : destructive
-        )
+        primary
+          ? "bg-primary-600 border-primary-600 hover:bg-pink-700 hover:border-pink-700 text-white"
+          : secondary
+          ? "bg-pink-200 border-pink-200 hover:bg-pink-300 hover:border-pink-300"
+          : destructive
           ? "bg-red-600 border-red-600 hover:bg-red-700 hover:border-red-700 text-white"
           : "bg-gray-300 border-gray-300 hover:bg-gray-400 hover:border-gray-400",
-      ]}
+      ].join(" ")}
     >
       {label}
     </Link>
@@ -42,7 +40,7 @@ export const UIButton = ({
           : destructive
           ? "bg-red-800 border-red-800 hover:bg-red-900 hover:border-red-900 text-white"
           : "bg-gray-300 border-gray-300 hover:bg-gray-400 hover:border-gray-400",
-      ]}
+      ].join(" ")}
     >
       {label}
     </button>

@@ -3,10 +3,11 @@ import { UITextarea } from "../UI/UITextarea"
 import { UIButton } from "../UI/UIButton"
 import { usersHooks } from "../../hooks/usersHooks"
 import { userMethods } from "../../fetch/users"
-import { redirect, useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 
 export const UserSettings = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const { userRetrieved } = usersHooks()
   const { user } = userRetrieved(id)
@@ -48,7 +49,7 @@ export const UserSettings = () => {
     const { del } = userMethods()
     const data = await del(id)
     localStorage.removeItem("Bearer")
-    redirect("/")
+    navigate("/")
     return data
   }
 
