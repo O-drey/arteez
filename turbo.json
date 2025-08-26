@@ -3,7 +3,7 @@
   "tasks": {
     "build": {
       "outputs": ["dist/**", "./vercel/**"],
-      "env": [],
+      "env": ["VITE_API_PROD"],
       "inputs": ["$TURBO_DEFAULT$", ".env"]
     },
     "check-types": {
