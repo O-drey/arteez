@@ -2,8 +2,9 @@
   "$schema": "https://turborepo.com/schema.json",
   "tasks": {
     "build": {
-      "outputs": ["dist/**","./vercel/**"],
-      "env": []
+      "outputs": ["dist/**", "./vercel/**"],
+      "env": [],
+      "inputs": ["$TURBO_DEFAULT$", ".env"]
     },
     "check-types": {
       "dependsOn": ["^check-types"]

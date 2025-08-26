@@ -37,7 +37,12 @@ export function LoginPage() {
       >
         <h1>Connectez-vous</h1>
 
-        <UIInput id="username" name="username" label="Nom utilisateur" />
+        <UIInput
+          id="username"
+          name="username"
+          label="Nom utilisateur"
+          type="email"
+        />
         <UIInput
           id="password"
           name="password"

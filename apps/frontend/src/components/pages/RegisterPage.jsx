@@ -72,7 +72,13 @@ export function RegisterPage() {
           />
         </fieldset>
         <fieldset className="flex flex-col gap-4">
-          <UIInput id="email" name="email" label="E-mail" htmlFor="email" />
+          <UIInput
+            id="email"
+            name="email"
+            label="E-mail"
+            htmlFor="email"
+            type="email"
+          />
           <UIInput
             id="password"
             name="password"
