@@ -16,39 +16,39 @@ app.get("/", (req, res) => {
   res.send("Hello World!")
 })
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true)
-
-    const allowedPatterns = [
-      /^https:\/\/arteez-frontend.*\.vercel\.app$/,
-      /^http:\/\/localhost:\d+$/,
-    ]
-
-    const isAllowed = allowedPatterns.some((pattern) => pattern.test(origin))
-    callback(null, isAllowed)
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PATCH", "DELETE"],
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "Accept",
-    "Access-Control-Allow-Origin",
-  ],
-}
-
 // const corsOptions = {
-//   origin: [
-//     process.env.NODE_ENV_FRONTEND_LOCAL,
-//     process.env.LOCAL_API_URL,
-//     process.env.NODE_ENV_FRONTEND_PROD,
-//     process.env.NODE_ENV_FRONTEND_PROD_PREVIEW,
-//   ],
+//   origin: function (origin, callback) {
+//     if (!origin) return callback(null, true)
+
+//     const allowedPatterns = [
+//       /^https:\/\/arteez-frontend.*\.vercel\.app$/,
+//       /^http:\/\/localhost:\d+$/,
+//     ]
+
+//     const isAllowed = allowedPatterns.some((pattern) => pattern.test(origin))
+//     callback(null, isAllowed)
+//   },
 //   credentials: true,
 //   methods: ["GET", "POST", "PATCH", "DELETE"],
-//   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+//   allowedHeaders: [
+//     "Content-Type",
+//     "Authorization",
+//     "Accept",
+//     "Access-Control-Allow-Origin",
+//   ],
 // }
+
+const corsOptions = {
+  origin: [
+    process.env.NODE_ENV_FRONTEND_LOCAL,
+    process.env.LOCAL_API_URL,
+    process.env.NODE_ENV_FRONTEND_PROD,
+    "https://arteez-frontend-*.vercel.app",
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PATCH", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+}
 
 app.use(cors(corsOptions))
 app.use(json())
