@@ -1,7 +1,10 @@
 import axios from "axios"
 
 export const httpServer = axios.create({
-  baseURL: import.meta.env.VITE_API_LOCAL ?? import.meta.env.VITE_API_PROD,
+  baseURL:
+    import.meta.env.VITE_API_LOCAL ||
+    import.meta.env.VITE_API_PROD ||
+    "https://arteez-backend-*.vercel.app",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
