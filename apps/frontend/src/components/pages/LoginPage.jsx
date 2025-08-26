@@ -1,32 +1,29 @@
 import { Link } from "react-router"
-import { redirect } from "react-router"
 import { useNavigate } from "react-router"
+import { login as loginFetch } from "../../fetch/login"
 import { UIInput } from "../UI/UIInput"
-import loginImg from "../../assets/login_img.webp"
 import { UIButton } from "../UI/UIButton"
+import loginImg from "../../assets/login_img.webp"
 
 export function LoginPage() {
   const navigate = useNavigate()
 
   async function login(formData) {
-    const username = formData.get("username")
-    console.log(username)
-
-    const email = formData.get("email")
-    console.log(email)
-
+    const identifier = formData.get("identifier")
     const password = formData.get("password")
-    console.log(password)
-
-    // const newUser = {
-    //   username,
-    //   password,
-    //   email,
-    // }
 
     try {
-      if (!username || !password) return
-      localStorage.setItem("Bearer", "123_456")
+      if (!identifier || !password) {
+        alert("Tous les champs sont obligatoires")
+        return
+      }
+
+      const payload = { identifier, password }
+      console.log("payload", payload)
+      const data = await loginFetch(payload)
+      console.log("data", data)
+
+      localStorage.setItem("Bearer", data)
       navigate("/")
     } catch (err) {
       console.error("Erreur : ", err)
@@ -41,16 +38,18 @@ export function LoginPage() {
         <h1>Connectez-vous</h1>
 
         <UIInput
-          id="username"
-          name="username"
+          id="identifier"
+          name="identifier"
           label="Nom utilisateur"
-          type="email"
+          required
         />
+
         <UIInput
           id="password"
           name="password"
           label="Mot de passe"
           type="password"
+          required
         />
 
         <UIButton type="submit" value="submit" label="Connexion" primary />

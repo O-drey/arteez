@@ -1,21 +1,59 @@
 import { Router } from "express"
 import { PrismaClient } from "@prisma/client"
+import bcrypt from "bcrypt"
 
 const router = Router()
 const prisma = new PrismaClient()
 
-router.post("/", (req, res) => {
-  const credentials = req.headers.authorization
-  const [username, password] = credentials.split(":")
+router.post("/", async (req, res) => {
+  try {
+    console.log("req.body :", req.body)
+    const { identifier, password } = req.body
 
-  const checkUser = prisma.user.findFirst({ where: username, password })
-
-  if (!checkUser)
-    res.json({
-      message:
-        "Ce compte n'existe pas, vérifiez vos informations ou créez votre compte.",
+    let user = await prisma.user.findUnique({
+      where: { username: identifier },
     })
+    console.log("user find by username : ", user)
 
-  const token = "123456azerty"
-  req.headers.authorization = `Bearer ${token}`
+    if (!user) {
+      const emailLower = identifier.toLowerCase()
+      console.log("emailLower : ", emailLower)
+      user = await prisma.user.findUnique({
+        where: { email: emailLower },
+      })
+
+      console.log("user find by email : ", user)
+    }
+
+    if (!user)
+      res.json({
+        message:
+          "Ce compte n'existe pas, vérifiez vos informations ou créez votre compte.",
+      })
+    const match = await bcrypt.compare(password, user.password)
+    if (!match) {
+      console.log("Identifiants incorrectes. Vérifiez vos informations.")
+      res.json({
+        message: "Identifiants incorrectes. Vérifiez vos informations.",
+      })
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password)
+
+    if (!isPasswordValid) {
+      console.log("Mot de passe incorrect.")
+      return null
+    }
+
+    console.log("Connexion réussie :", user.email)
+    const token = "123456azerty"
+    const auth = (req.headers.authorization = `Bearer ${token}`)
+    console.log("req.headers.authorization : ", auth)
+    return auth
+  } catch (err) {
+    console.error("Erreur lors de la connexion :", err)
+    throw err
+  }
 })
+
+export default router

@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client"
+import bcrypt from "bcrypt"
+
 const prisma = new PrismaClient()
 
 export const usersMethods = () => {
@@ -30,13 +32,15 @@ export const usersMethods = () => {
         console.log("Utilisateur existe déjà.")
         return
       } else {
+        const hashedPassword = await bcrypt.hash(password, 12)
+
         const newUser = await prisma.user.create({
           data: {
             firstname,
             lastname,
             email,
             username,
-            password,
+            password: hashedPassword,
           },
         })
         return newUser

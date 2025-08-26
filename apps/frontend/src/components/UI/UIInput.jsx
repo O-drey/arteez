@@ -1,6 +1,17 @@
 import { useState } from "react"
 
-export const UIInput = ({ label, defaultValue, type, id, name, htmlFor }) => {
+export const UIInput = ({
+  label,
+  defaultValue,
+  type,
+  id,
+  name,
+  htmlFor,
+  required,
+  value,
+  onChange,
+  ...props
+}) => {
   const inputStyle = "py-2 px-3 border-1 border-gray-800 rounded bg-white"
   const labelStyle = "font-semibold flex flex-col gap-2"
   const [seePassword, setSeePassword] = useState(false)
@@ -21,6 +32,10 @@ export const UIInput = ({ label, defaultValue, type, id, name, htmlFor }) => {
             className="py-2 px-3 rounded-l w-full bg-white"
             id={id}
             name={name}
+            required={required}
+            value={value}
+            onChange={onChange}
+            {...props}
           />
           <button
             onClick={handleSeePassword}
@@ -36,6 +51,10 @@ export const UIInput = ({ label, defaultValue, type, id, name, htmlFor }) => {
           className={inputStyle}
           id={id}
           name={name}
+          required={required}
+          value={value}
+          onChange={onChange}
+          {...props}
         />
       )}
     </label>

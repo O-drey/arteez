@@ -9,6 +9,7 @@ import { PrismaClient } from "@prisma/client"
 import usersRouter from "./routes/users.js"
 import artsRouter from "./routes/artworks.js"
 import collectionsRouter from "./routes/collections.js"
+import loginRouter from "./routes/auth.js"
 
 const app = express()
 const port = process.env.LOCAL_API_PORT || process.env.NODE_ENV_API_PROD
@@ -80,6 +81,7 @@ app.use(urlencoded({ extended: false }))
 app.use("/users", usersRouter)
 app.use("/arts", artsRouter)
 app.use("/collections", collectionsRouter)
+app.use("/login", loginRouter)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

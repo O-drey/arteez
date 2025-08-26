@@ -1,47 +1,56 @@
+import { useNavigate, Link } from "react-router"
 import { usersHooks } from "../../hooks/usersHooks"
 import { userMethods } from "../../fetch/users"
-import { useNavigate } from "react-router"
-import { Link } from "react-router"
 import { UIInput } from "../UI/UIInput"
-import loginImg from "../../assets/login_img.webp"
 import { UIButton } from "../UI/UIButton"
+import loginImg from "../../assets/login_img.webp"
+import { useState } from "react"
 
 export function RegisterPage() {
   const { userList } = usersHooks()
   const { loading, error } = userList()
   const navigate = useNavigate()
+  const [password, setPassword] = useState("")
 
   if (loading) return <p>Chargement…</p>
   if (error) return <p>Erreur : {error.message}</p>
 
+  const rules = [
+    { label: "1 minuscule", test: /[a-z]/ },
+    { label: "1 majuscule", test: /[A-Z]/ },
+    { label: "1 chiffre (0-9)", test: /\d/ },
+    { label: "1 caractère spécial (hors `~)", test: /[^A-Za-z\d`~]/ },
+    { label: "12 à 24 caractères", test: /^.{12,24}$/ },
+  ]
+  const handleOnChange = () => {}
   async function createUser(formData) {
     const firstname = formData.get("firstname")
-    console.log(firstname)
     const lastname = formData.get("lastname")
-    console.log(lastname)
-
     const username = formData.get("username")
-    console.log(username)
-
     const email = formData.get("email")
-    console.log(email)
-
     const password = formData.get("password")
     console.log(password)
+    const isValid = rules.every((rule) => rule.test.test(password))
 
-    const newUser = {
-      firstname,
-      lastname,
-      username,
-      email,
-      password,
+    if (!isValid) {
+      alert("Le mot de passe ne respècete pas les règles")
+      return
     }
 
     try {
-      if (!firstname || !lastname || !username || !email || !password) return
+      if (!firstname || !lastname || !username || !email || !password) {
+        alert("Tous les champs sont obligatoires")
+        return
+      }
 
       const { create } = userMethods()
-      const data = await create(newUser)
+      const data = await create({
+        firstname,
+        lastname,
+        username,
+        email,
+        password,
+      })
       navigate("/")
       return data
     } catch (err) {
@@ -58,18 +67,21 @@ export function RegisterPage() {
             name="firstname"
             label="Prénom"
             htmlFor="firstname"
+            required
           />
           <UIInput
             id="lastname"
             name="lastname"
             label="Nom de famille"
             htmlFor="lastname"
+            required
           />
           <UIInput
             id="username"
             name="username"
             label="Nom utilisateur"
             htmlFor="username"
+            required
           />
         </fieldset>
         <fieldset className="flex flex-col gap-4">
@@ -79,6 +91,7 @@ export function RegisterPage() {
             label="E-mail"
             htmlFor="email"
             type="email"
+            required
           />
           <UIInput
             id="password"
@@ -86,16 +99,35 @@ export function RegisterPage() {
             label="Mot de passe"
             htmlFor="password"
             type="password"
+            required
+            maxLength={24}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
-          <div className="bg-blue-50 rounded-xl py-6 px-8">
+          <div className="bg-blue-50 rounded-xl py-6 px-8 font-medium">
             Votre mot de passe doit contenir au minimum :
-            <ul className="list-disc">
+            {/* <ul className="list-disc">
               <li>1 minuscule</li>
               <li>1 Majuscule</li>
               <li>1 chiffre (0-9)</li>
               <li>1 caractère spécial (hors `~)</li>
               <li>12 caractères</li>
+            </ul> */}
+            <ul className="list-disc pl-6">
+              {rules.map((rule) => {
+                const valid = rule.test.test(password)
+                return (
+                  <li
+                    key={rule.label}
+                    className={`flex items-center gap-2 ${
+                      valid ? "text-green-600" : "text-gray-500"
+                    }`}
+                  >
+                    {valid ? "✅" : "❌"} {rule.label}
+                  </li>
+                )
+              })}
             </ul>
           </div>
         </fieldset>
