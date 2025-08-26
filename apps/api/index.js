@@ -16,13 +16,19 @@ app.get("/", (req, res) => {
   res.send("Hello World!")
 })
 
-app.use(
-  cors({
-    origin:
-      process.env.NODE_ENV_FRONTEND_LOCAL ?? process.env.NODE_ENV_FRONTEND_PROD,
-    credentials: true,
-  })
-)
+const corsOptions = {
+  origin: [
+    process.env.NODE_ENV_FRONTEND_LOCAL,
+    process.env.LOCAL_API_URL,
+    process.env.NODE_ENV_FRONTEND_PROD,
+    process.env.NODE_ENV_FRONTEND_PROD_PREVIEW,
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PATCH", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+}
+
+app.use(cors(corsOptions))
 app.use(json())
 app.use(urlencoded({ extended: false }))
 
