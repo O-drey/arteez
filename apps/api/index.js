@@ -30,7 +30,12 @@ const corsOptions = {
   },
   credentials: true,
   methods: ["GET", "POST", "PATCH", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Accept",
+    "Access-Control-Allow-Origin",
+  ],
 }
 
 // const corsOptions = {
