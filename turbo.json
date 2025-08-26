@@ -1,21 +1,21 @@
 {
   "$schema": "https://turborepo.com/schema.json",
+  "globalEnv": ["NODE_ENV_API_PROD"],
   "tasks": {
     "build": {
-      "outputs": ["dist/**", "./vercel/**"],
-      "env": []
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
     },
     "frontend#build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"],
-      "env": ["NODE_ENV_API_PROD"]
+      "outputs": ["dist/**"]
     },
-    "check-types": {
-      "dependsOn": ["^check-types"]
+    "api#build": {
+      "outputs": ["dist/**"]
     },
     "dev": {
-      "persistent": true,
-      "cache": false
+      "cache": false,
+      "persistent": true
     }
   }
 }
