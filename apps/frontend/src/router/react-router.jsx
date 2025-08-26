@@ -53,7 +53,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/collections/:id",
+    path: "/collection/:id",
     children: [
       { index: true, Component: CollectionPage },
       // { path: "settings", Component: ConcertsCity },

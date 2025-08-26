@@ -16,7 +16,7 @@ export const UserProfile = () => {
   const collections = [
     {
       id: 1,
-      title: "colection 1",
+      title: "collection 1",
       items: [
         { id: 1 },
         { id: 2 },
@@ -29,12 +29,12 @@ export const UserProfile = () => {
     },
     {
       id: 2,
-      title: "colection 2",
+      title: "collection 2",
       items: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }],
     },
     {
       id: 3,
-      title: "colection 3",
+      title: "collection 3",
       items: [{ id: 1 }, { id: 2 }],
     },
   ]
