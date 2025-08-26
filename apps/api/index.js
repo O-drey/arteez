@@ -11,7 +11,7 @@ import artsRouter from "./routes/artworks.js"
 import collectionsRouter from "./routes/collections.js"
 
 const app = express()
-const port = process.env.LOCAL_API_PORT ?? process.env.NODE_ENV_API_PROD
+const port = process.env.LOCAL_API_PORT || process.env.NODE_ENV_API_PROD
 app.get("/", (req, res) => {
   res.send("Hello World!")
 })
