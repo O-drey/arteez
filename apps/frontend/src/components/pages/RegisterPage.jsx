@@ -11,6 +11,7 @@ export function RegisterPage() {
   const { loading, error } = userList()
   const navigate = useNavigate()
   const [password, setPassword] = useState("")
+  const [disabledButton, setDisabledButton] = useState(true)
 
   if (loading) return <p>Chargement…</p>
   if (error) return <p>Erreur : {error.message}</p>
@@ -22,14 +23,14 @@ export function RegisterPage() {
     { label: "1 caractère spécial (hors `~)", test: /[^A-Za-z\d`~]/ },
     { label: "12 à 24 caractères", test: /^.{12,24}$/ },
   ]
-  const handleOnChange = () => {}
+
   async function createUser(formData) {
     const firstname = formData.get("firstname")
     const lastname = formData.get("lastname")
     const username = formData.get("username")
     const email = formData.get("email")
     const password = formData.get("password")
-    console.log(password)
+
     const isValid = rules.every((rule) => rule.test.test(password))
 
     if (!isValid) {
@@ -43,6 +44,7 @@ export function RegisterPage() {
         return
       }
 
+      setDisabledButton(!disabledButton)
       const { create } = userMethods()
       const data = await create({
         firstname,
@@ -107,13 +109,6 @@ export function RegisterPage() {
 
           <div className="bg-blue-50 rounded-xl py-6 px-8 font-medium">
             Votre mot de passe doit contenir au minimum :
-            {/* <ul className="list-disc">
-              <li>1 minuscule</li>
-              <li>1 Majuscule</li>
-              <li>1 chiffre (0-9)</li>
-              <li>1 caractère spécial (hors `~)</li>
-              <li>12 caractères</li>
-            </ul> */}
             <ul className="list-disc pl-6">
               {rules.map((rule) => {
                 const valid = rule.test.test(password)
@@ -145,7 +140,13 @@ export function RegisterPage() {
           </span>
         </label>
 
-        <UIButton type="submit" value="submit" label="Créer mon compte" />
+        <UIButton
+          type="submit"
+          value="submit"
+          label="Créer mon compte"
+          primary
+          disabled={disabledButton}
+        />
 
         <span>
           Vous avez déjà un compte ?{" "}

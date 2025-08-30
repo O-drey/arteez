@@ -55,7 +55,7 @@ export const UserProfile = () => {
         <div>
           <div className="flex justify-between mb-4">
             <h1>{user.username}</h1>
-            <UIButton href="settings" label="Paramètres" />
+            <UIButton to="settings" label="Paramètres" />
           </div>
           <p className="max-w-2xl">{user.bio}</p>
         </div>

@@ -47,9 +47,9 @@ router.post("/", async (req, res) => {
 
     console.log("Connexion réussie :", user.email)
     const token = "123456azerty"
+    res.json({ token, userId: user.id })
     const auth = (req.headers.authorization = `Bearer ${token}`)
-    console.log("req.headers.authorization : ", auth)
-    return auth
+    return { auth, user: user.id }
   } catch (err) {
     console.error("Erreur lors de la connexion :", err)
     throw err

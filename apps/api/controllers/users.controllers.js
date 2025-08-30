@@ -55,9 +55,19 @@ export const usersMethods = () => {
       datas
 
     try {
+      const hashedPassword = await bcrypt.hash(password, 12)
+
       const userUptades = await prisma.user.update({
         where: { id },
-        data: { firstname, lastname, email, username, password, bio, dob },
+        data: {
+          firstname,
+          lastname,
+          email,
+          username,
+          password: hashedPassword,
+          bio,
+          dob,
+        },
       })
 
       return userUptades

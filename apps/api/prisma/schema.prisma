@@ -24,6 +24,8 @@ model User {
   dob           DateTime?
   favoritesArts Arts[]
   collections   ArtsCollections[]
+  // addedArts     Arts[]            @relation(fields: [addedArtsId], references: [id])
+  // addedArtsId   String[]          @db.ObjectId
 }
 
 model Image {
