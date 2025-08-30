@@ -39,30 +39,31 @@ app.get("/", (req, res) => {
 //   ],
 // }
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    console.log("CORS origin: ", origin)
-    if (!origin) return callback(null, true)
+// TEST 2
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     console.log("CORS origin: ", origin)
+//     if (!origin) return callback(null, true)
 
-    const allowed = [
-      process.env.NODE_ENV_FRONTEND_PROD,
-      process.env.NODE_ENV_FRONTEND_LOCAL,
-    ]
+//     const allowed = [
+//       process.env.NODE_ENV_FRONTEND_PROD,
+//       process.env.NODE_ENV_FRONTEND_LOCAL,
+//     ]
 
-    // Check exact matches
-    if (allowed.includes(origin)) return callback(null, true)
+//     // Check exact matches
+//     if (allowed.includes(origin)) return callback(null, true)
 
-    // Check preview pattern
-    if (/^https:\/\/arteez-frontend.*\.vercel\.app$/.test(origin)) {
-      return callback(null, true)
-    }
+//     // Check preview pattern
+//     if (/^https:\/\/arteez-frontend.*\.vercel\.app$/.test(origin)) {
+//       return callback(null, true)
+//     }
 
-    callback(null, false)
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PATCH", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization", "Accept"],
-}
+//     callback(null, false)
+//   },
+//   credentials: true,
+//   methods: ["GET", "POST", "PATCH", "DELETE"],
+//   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+// }
 // const corsOptions = {
 //   origin: [
 //     process.env.NODE_ENV_FRONTEND_LOCAL,
@@ -75,7 +76,14 @@ const corsOptions = {
 //   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
 // }
 
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV_FRONTEND_LOCAL || process.env.NODE_ENV_FRONTEND_PROD,
+    credentials: true,
+  })
+)
 app.use(json())
 app.use(urlencoded({ extended: false }))
 
@@ -84,9 +92,6 @@ app.use("/arts", artsRouter)
 app.use("/collections", collectionsRouter)
 app.use("/login", loginRouter)
 
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}`)
-// })
 // await cloudinaryConnection
 
 const prisma = new PrismaClient()
