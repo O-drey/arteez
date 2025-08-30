@@ -1,6 +1,11 @@
 import { Router } from "express"
 
 import { artsMethods } from "../controllers/arts.controllers.js"
+import multer from "multer"
+import { v2 as cloudinary } from "cloudinary"
+// import { artsCollectionsMethods } from "../controllers/collections.controllers.js"
+// import { PrismaClient } from "@prisma/client"
+// const prisma = new PrismaClient()
 
 const router = Router()
 
@@ -28,20 +33,38 @@ router.get("/:id", async (req, res) => {
   }
 })
 
-router.post("/", async (req, res) => {
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET_KEY,
+})
+
+const upload = multer({ dest: "uploads/" })
+
+router.post("/", upload.array("imgs", 6), async (req, res) => {
   try {
-    const { title, author, date, annotation, imgs } = req.body
+    console.log(req)
+    console.log("files : ", req.files)
+    const { title, author, annotation } = req.body
+
+    const uploadedUrls = []
+    for (const file of req.files) {
+      const result = await cloudinary.uploader.upload(file.path, {
+        folder: "arteez",
+      })
+      uploadedUrls.push(result.secure_url)
+    }
 
     const newArt = {
       title,
-      author,
-      date,
+      // author,
       annotation,
-      imgs,
+      img: uploadedUrls,
     }
-
     const { create } = artsMethods()
     const data = await create(newArt)
+    // const { retrieve, create: createCollection } = artsCollectionsMethods()
+    // const addAuthor = await prisma.artsCollections.findUnique({ where: { firstname:authorFirstname } })
     console.log(data)
     res.status(201).json(data)
   } catch (error) {

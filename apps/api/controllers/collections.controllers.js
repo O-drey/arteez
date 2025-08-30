@@ -9,8 +9,8 @@ export const artsCollectionsMethods = () => {
 
   const retrieve = async (id) => {
     try {
-      const art = await prisma.artsCollections.findUnique({ where: { id } })
-      return art
+      const data = await prisma.artsCollections.findUnique({ where: { id } })
+      return data
     } catch (error) {
       console.error(error)
     }
@@ -20,10 +20,10 @@ export const artsCollectionsMethods = () => {
     const { artsId } = datas
 
     try {
-      const newArt = await prisma.artsCollections.create({
+      const newCollection = await prisma.artsCollections.create({
         data: { artsId },
       })
-      return newArt
+      return newCollection
     } catch (error) {
       console.error(error)
     }
@@ -33,12 +33,12 @@ export const artsCollectionsMethods = () => {
     const { artsId, id } = datas
 
     try {
-      const artUptades = await prisma.artsCollections.update({
+      const collectionUptades = await prisma.artsCollections.update({
         where: { id },
         data: { artsId },
       })
 
-      return artUptades
+      return collectionUptades
     } catch (error) {
       console.error(error)
     }

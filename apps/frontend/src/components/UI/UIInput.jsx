@@ -10,6 +10,9 @@ export const UIInput = ({
   required,
   value,
   onChange,
+  accept,
+  maxLength,
+  multiple,
   ...props
 }) => {
   const inputStyle = "py-2 px-3 border-1 border-gray-800 rounded bg-white"
@@ -52,6 +55,9 @@ export const UIInput = ({
           id={id}
           name={name}
           required={required}
+          accept={accept}
+          maxLength={maxLength}
+          multiple={multiple}
           value={value}
           onChange={onChange}
           {...props}

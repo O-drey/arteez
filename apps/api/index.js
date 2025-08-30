@@ -99,8 +99,8 @@ const prisma = new PrismaClient()
 
 async function main() {
   try {
-    const allUsers = await prisma.user.findMany()
-    console.log("allUsers : ", allUsers)
+    const allArts = await prisma.arts.findMany()
+    console.log("allArts :", allArts)
   } catch (error) {
     console.error("Erreur lors de la création:", error)
   }

@@ -12,6 +12,11 @@ export const UIHeader = () => {
       name: "Mon compte",
       to: user ? `/user/${user.id}` : "/auth/login",
     },
+    {
+      value: "add_art",
+      name: "Ajouter une œuvre",
+      to: "/arts/add",
+    },
     !token && {
       value: "singup",
       name: "Créer mon compte",

@@ -17,17 +17,17 @@ export const artsMethods = () => {
   }
 
   const create = async (datas) => {
-    const { title, author, date, annotation, userId, imageId } = datas
+    const { title, author, annotation, userId, imageId, img } = datas
 
     try {
       const newArt = await prisma.arts.create({
         data: {
           title,
-          author,
-          date,
+          // author,
           annotation,
           userId,
-          imageId,
+          img,
+          // imageId,
         },
       })
       return newArt
