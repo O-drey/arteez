@@ -2,6 +2,7 @@ import "./index.css"
 import { Link } from "react-router"
 import { UsersPage } from "./components/pages/UsersPage"
 import { UIHeader } from "./components/UI/UIHeader"
+import { ArtsPage } from "./components/pages/ArtsPage"
 // import { artsHooks } from "./hooks/artsHooks"
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       </h1>
       <h2>Les utilisateurs</h2>
       <UsersPage />
+      <ArtsPage />
 
       {/* {arts.map((art, index) => (
         <div key={art.id || index}>

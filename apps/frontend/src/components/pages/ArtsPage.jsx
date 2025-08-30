@@ -17,7 +17,7 @@ export function ArtsPage() {
         setArts(data)
         return data
       } catch (err) {
-        console.error("Erreur lors du chargemetn des images", err)
+        console.error("Erreur lors du chargement des images", err)
       } finally {
         setLoading(false)
       }
@@ -32,7 +32,9 @@ export function ArtsPage() {
         arts.map((art, index) => (
           <Link key={art.id || index} to={`/art/${art.id}`}>
             <div>
-              <span>{art.title}</span>
+              {art.img.map((img, index) => (
+                <img key={index} src={img} />
+              ))}
             </div>
           </Link>
         ))

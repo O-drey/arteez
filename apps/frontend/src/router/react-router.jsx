@@ -12,6 +12,7 @@ import { UserSettings } from "../components/pages/UserSettings"
 import { CollectionPage } from "../components/pages/CollectionPage"
 import { ArtPage } from "../components/pages/ArtPage"
 import { AddArtPage } from "../components/pages/AddArtPage"
+import { ArtSettings } from "../components/pages/ArtSettings"
 
 export const router = createBrowserRouter([
   {
@@ -48,7 +49,10 @@ export const router = createBrowserRouter([
   },
   {
     path: "/art/:id",
-    children: [{ index: true, Component: ArtPage }],
+    children: [
+      { index: true, Component: ArtPage },
+      { path: "/art/:id/settings?", Component: ArtSettings },
+    ],
   },
   {
     path: "/collection/:id",
