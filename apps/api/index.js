@@ -13,6 +13,14 @@ import loginRouter from "./routes/auth.js"
 
 const app = express()
 const port = process.env.PORT || 4000
+
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV_FRONTEND_LOCAL || process.env.NODE_ENV_FRONTEND_PROD,
+  })
+)
+
 app.get("/", (req, res) => {
   res.send("Hello World!")
 })
@@ -77,13 +85,6 @@ app.get("/", (req, res) => {
 // }
 
 // app.use(cors(corsOptions))
-app.use(
-  cors({
-    origin:
-      process.env.NODE_ENV_FRONTEND_LOCAL || process.env.NODE_ENV_FRONTEND_PROD,
-    credentials: true,
-  })
-)
 app.use(json())
 app.use(urlencoded({ extended: false }))
 
