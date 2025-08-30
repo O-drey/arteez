@@ -7,7 +7,11 @@ export const UIHeader = () => {
 
   const menu = [
     { value: "home", name: "Accueil", to: "/" },
-    { value: "account", name: "Mon compte", to: `/user/${user.id}` },
+    {
+      value: "account",
+      name: "Mon compte",
+      to: user ? `/user/${user.id}` : "/auth/login",
+    },
     !token && {
       value: "singup",
       name: "Créer mon compte",

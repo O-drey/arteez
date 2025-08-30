@@ -12,7 +12,7 @@ import collectionsRouter from "./routes/collections.js"
 import loginRouter from "./routes/auth.js"
 
 const app = express()
-const port = process.env.LOCAL_API_PORT || process.env.NODE_ENV_API_PROD
+const port = process.env.PORT || 4000
 app.get("/", (req, res) => {
   res.send("Hello World!")
 })
@@ -41,6 +41,7 @@ app.get("/", (req, res) => {
 
 const corsOptions = {
   origin: function (origin, callback) {
+    console.log("CORS origin: ", origin)
     if (!origin) return callback(null, true)
 
     const allowed = [
@@ -83,9 +84,9 @@ app.use("/arts", artsRouter)
 app.use("/collections", collectionsRouter)
 app.use("/login", loginRouter)
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`)
+// })
 // await cloudinaryConnection
 
 const prisma = new PrismaClient()
@@ -105,11 +106,18 @@ main()
     process.exit(1)
   })
   .finally(async () => {
-    await prisma.$disconnect()
+    // await prisma.$disconnect()
   })
 
 app.use(function (req, res, next) {
   next(createError(404))
 })
+
+if (process.env.NODE_ENV !== "production") {
+  const port = process.env.PORT || 4000
+  app.listen(port, () => {
+    console.log(`✅ API running locally on http://localhost:${port}`)
+  })
+}
 
 export default app
