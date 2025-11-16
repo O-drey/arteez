@@ -13,7 +13,7 @@ export const CollectionPage = () => {
   return (
     <div>
       <h1>Page de la collection</h1>
-      <div className="grid grid-cols-4">
+      <div className="grid grid-cols-4 gap-6 my-24">
         {arts.map((art, index) => (
           <div key={index}>
             <div className="w-auto h-auto object-cover object-center">

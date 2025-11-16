@@ -13,6 +13,8 @@ import { CollectionPage } from "../components/pages/CollectionPage"
 import { ArtPage } from "../components/pages/ArtPage"
 import { AddArtPage } from "../components/pages/AddArtPage"
 import { ArtSettings } from "../components/pages/ArtSettings"
+import { AuthorPage } from "../components/pages/AuthorPage"
+import { AuthorsListPage } from "../components/pages/AuthorsListPage"
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +55,14 @@ export const router = createBrowserRouter([
       { index: true, Component: ArtPage },
       { path: "/art/:id/settings?", Component: ArtSettings },
     ],
+  },
+  {
+    path: "/authors",
+    children: [{ index: true, Component: AuthorsListPage }],
+  },
+  {
+    path: "/author/:id",
+    children: [{ index: true, Component: AuthorPage }],
   },
   {
     path: "/collection/:id",

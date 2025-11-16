@@ -3,13 +3,12 @@ import express, { json, urlencoded } from "express"
 import createError from "http-errors"
 import cors from "cors"
 import { PrismaClient } from "@prisma/client"
-// import { PrismaClient } from "./generated/prisma/index.js"
-// import { cloudinaryConnection } from "../api/fetch/fetchCloudinary.js"
 
 import usersRouter from "./routes/users.js"
 import artsRouter from "./routes/artworks.js"
 import collectionsRouter from "./routes/collections.js"
 import loginRouter from "./routes/auth.js"
+import authorRouter from "./routes/author.js"
 
 const app = express()
 const port = process.env.PORT || 4000
@@ -92,8 +91,7 @@ app.use("/users", usersRouter)
 app.use("/arts", artsRouter)
 app.use("/collections", collectionsRouter)
 app.use("/login", loginRouter)
-
-// await cloudinaryConnection
+app.use("/authors", authorRouter)
 
 const prisma = new PrismaClient()
 

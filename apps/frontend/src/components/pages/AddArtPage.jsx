@@ -42,7 +42,6 @@ export const AddArtPage = () => {
   async function handleArtUploadSubmit(e) {
     if (!user) return
     e.preventDefault()
-    // const { create } = artsMethods()
     const formData = new FormData(e.target)
     // const input = formData.get("uploaded_imgs")
     const uploadedImgs = formData.getAll("uploaded_imgs")
@@ -55,15 +54,13 @@ export const AddArtPage = () => {
     const data = new FormData()
     uploadedImgs.forEach((file) => data.append("imgs", file)) // fichiers bruts
     data.append("title", title)
-    // data.append("author", author)
+    data.append("author", author)
     data.append("annotation", annotation)
     data.append("userId", user.id)
 
-    // const { data } = create(newArt)
     const res = await axios.post("http://localhost:3000/arts", data)
     console.log("res:", res.data)
     console.log("data create art: ", data)
-    // return data
   }
 
   return (
@@ -117,7 +114,7 @@ export const AddArtPage = () => {
                 name="uploaded_imgs_annotation"
                 label="Pourquoi vous aimez cette œuvre ? Qu’est-ce qui a retenu votre attention ?"
               />
-              <UIButton type="submit" label="Chercher" />
+              <UIButton type="submit" label="Créer" />
             </form>
           </div>
         </div>

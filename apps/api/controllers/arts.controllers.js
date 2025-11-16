@@ -17,17 +17,16 @@ export const artsMethods = () => {
   }
 
   const create = async (datas) => {
-    const { title, author, annotation, userId, imageId, img } = datas
+    const { title, author, annotation, userId, img } = datas
 
     try {
       const newArt = await prisma.arts.create({
         data: {
           title,
-          // author,
+          author,
           annotation,
           userId,
           img,
-          // imageId,
         },
       })
       return newArt
@@ -42,7 +41,7 @@ export const artsMethods = () => {
     try {
       const artUptades = await prisma.arts.update({
         where: { id },
-        data: { firstname, title, author, date, annotation, imageId },
+        data: { title, author, date, annotation, imageId },
       })
 
       return artUptades

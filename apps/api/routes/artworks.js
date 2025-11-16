@@ -4,8 +4,9 @@ import { artsMethods } from "../controllers/arts.controllers.js"
 import multer from "multer"
 import { v2 as cloudinary } from "cloudinary"
 // import { artsCollectionsMethods } from "../controllers/collections.controllers.js"
-// import { PrismaClient } from "@prisma/client"
-// const prisma = new PrismaClient()
+import { PrismaClient } from "@prisma/client"
+import { authorsMethods } from "../controllers/authors.controllers.js"
+const prisma = new PrismaClient()
 
 const router = Router()
 
@@ -43,9 +44,9 @@ const upload = multer({ dest: "uploads/" })
 
 router.post("/", upload.array("imgs", 6), async (req, res) => {
   try {
-    console.log(req)
+    console.log(req.body)
     console.log("files : ", req.files)
-    const { title, author, annotation } = req.body
+    const { title, author: authorInfo, annotation, userId } = req.body
 
     const uploadedUrls = []
     for (const file of req.files) {
@@ -55,22 +56,119 @@ router.post("/", upload.array("imgs", 6), async (req, res) => {
       uploadedUrls.push(result.secure_url)
     }
 
-    const newArt = {
-      title,
-      // author,
-      annotation,
-      img: uploadedUrls,
-    }
-    const { create } = artsMethods()
-    const data = await create(newArt)
-    // const { retrieve, create: createCollection } = artsCollectionsMethods()
-    // const addAuthor = await prisma.artsCollections.findUnique({ where: { firstname:authorFirstname } })
-    console.log(data)
-    res.status(201).json(data)
+    console.log("uploadedUrls :", uploadedUrls)
+    console.log("filemane :", req.files)
+    const [firstname, ...lastname] = authorInfo.split(" ")
+    console.log("lastname in root :", lastname)
+
+    const authorLastname = lastname.join()
+    console.log("authorLastname in root :", authorLastname)
+
+    let author = await prisma.author.findFirst({
+      where: { firstname, lastname: authorLastname || null },
+    })
+    console.log("author find by firstname : ", author)
+
+    const result = await prisma.$transaction(async (trans) => {
+      let authorId
+
+      if (!author) {
+        author = await trans.author.create({
+          data: { firstname, lastname: authorLastname || null },
+        })
+
+        authorId = author.id
+      } else {
+        authorId = author.id
+      }
+
+      const newArt = await trans.arts.create({
+        data: {
+          title,
+          author: { connect: [{ id: authorId }] },
+          userId,
+          annotation,
+          img: uploadedUrls,
+        },
+      })
+      console.log("newArt, :", newArt)
+
+      return { author, art: newArt }
+    })
+
+    res.status(201).json(result)
   } catch (error) {
-    console.dir(error)
+    console.error(error)
+    res.json({ message: "Erreur serveur lors de la création de l'œuvre" })
   }
 })
+// router.post("/", upload.array("imgs", 6), async (req, res) => {
+//   try {
+//     console.log(req.body)
+//     console.log("files : ", req.files)
+//     const { title, author: authorInfo, annotation, userId } = req.body
+
+//     const uploadedUrls = []
+//     for (const file of req.files) {
+//       const result = await cloudinary.uploader.upload(file.path, {
+//         folder: "arteez",
+//       })
+//       uploadedUrls.push(result.secure_url)
+//     }
+
+//     console.log("uploadedUrls :", uploadedUrls)
+//     console.log("filemane :", req.files)
+//     const [firstname, ...lastname] = authorInfo.split(" ")
+//     console.log("lastname in root :", lastname)
+
+//     const authorLastname = lastname.join()
+//     console.log("authorLastname in root :", authorLastname)
+
+//     let author = await prisma.author.findFirst({
+//       where: { firstname },
+//     })
+//     console.log("author find by firstname : ", author)
+
+//     if (!author && authorLastname.length > 0) {
+//       console.log("lastname :", authorLastname)
+//       console.log("type of lastname :", typeof authorLastname)
+//       const authorLastnameLower = authorLastname.toLowerCase()
+//       console.log("authorLastnameLower : ", authorLastnameLower)
+//       author = await prisma.author.findFirst({
+//         where: { lastname: authorLastnameLower },
+//       })
+
+//       console.log("author find by lastname : ", author)
+//       return author
+//     }
+
+//     if (!author) {
+//       const { create } = authorsMethods()
+//       author = await create({
+//         firstname,
+//         lastname: authorLastname,
+//         artsId: req.files.filename,
+//       })
+//       console.log("author Id:", author.id)
+//       return author
+//     }
+
+//     const newArt = {
+//       title,
+//       author: author.id,
+//       userId,
+//       annotation,
+//       img: uploadedUrls,
+//     }
+//     console.log("newArt, :", newArt)
+//     const { create } = artsMethods()
+//     const data = await create(newArt)
+//     console.log(data)
+//     res.status(201).json(data)
+//   } catch (error) {
+//     console.dir(error)
+//   }
+// })
 
 router.patch("/:id", async (req, res) => {
   try {
