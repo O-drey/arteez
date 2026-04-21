@@ -5,14 +5,14 @@
   },
   "scripts": {
     "dev": "nx run-many -t dev",
-    "build": "vite build",
+    "build": "nx run-many -t build",
     "test": "nx run test",
     "lint": "nx run lint",
     "check-types": "tsc --noEmit",
     "kill:api": "kill -9 $(lsof -t -i:3000)",
     "kill:frontend --verbose": "kill -9 $(lsof -t -i:5173)"
   },
-  "packageManager": "npm@8.5.0",
+  "packageManager": "npm@11.4.2",
   "workspaces": [
     "apps/*",
     "packages/*"
