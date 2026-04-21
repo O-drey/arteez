@@ -1,0 +1,9 @@
+{
+  "name": "frontend",
+  "targets": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["{projectRoot}/dist/**"]
+    }
+  }
+}

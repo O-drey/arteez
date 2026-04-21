@@ -13,6 +13,7 @@ export const UIInput = ({
   accept,
   maxLength,
   multiple,
+  noAutocomplete,
   ...props
 }) => {
   const inputStyle = "py-2 px-3 border-1 border-gray-800 rounded bg-white"
@@ -38,6 +39,7 @@ export const UIInput = ({
             required={required}
             value={value}
             onChange={onChange}
+            autoComplete={noAutocomplete ? noAutocomplete : "on"}
             {...props}
           />
           <button

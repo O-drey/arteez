@@ -17,7 +17,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV_FRONTEND_LOCAL || process.env.NODE_ENV_FRONTEND_PROD,
-  })
+  }),
 )
 
 app.get("/", (req, res) => {
@@ -93,35 +93,50 @@ app.use("/collections", collectionsRouter)
 app.use("/login", loginRouter)
 app.use("/authors", authorRouter)
 
+if (!process.env.VERCEL) {
+  app
+    .listen(port, () => {
+      console.log(`✅ API running locally on http://localhost:${port}`)
+    })
+    .on("error", (err) => {
+      if (err.code === "EADDRINUSE") {
+        console.error(
+          `❌ Port ${port} déjà utilisé. Lance : kill -9 $(lsof -t -i:${port})`,
+        )
+      } else {
+        console.error("❌ Erreur serveur:", err)
+      }
+      process.exit(1)
+    })
+}
+// if (process.env.NODE_ENV !== "production") {
+//   app.listen(port, () => {
+//     console.log(`✅ API running locally on http://localhost:${port}`)
+//   })
+// }
+
 const prisma = new PrismaClient()
 
-async function main() {
-  try {
-    const allArts = await prisma.arts.findMany()
-    console.log("allArts :", allArts)
-  } catch (error) {
-    console.error("Erreur lors de la création:", error)
-  }
-}
+// async function main() {
+//   try {
+//     const allArts = await prisma.arts.findMany()
+//     console.log("allArts :", allArts)
+//   } catch (error) {
+//     console.error("Erreur lors de la création:", error)
+//   }
+// }
 
-main()
-  .catch(async (e) => {
-    console.error(e)
-    process.exit(1)
-  })
-  .finally(async () => {
-    // await prisma.$disconnect()
-  })
+// main()
+//   .catch(async (e) => {
+//     console.error(e)
+//     // process.exit(1)
+//   })
+//   .finally(async () => {
+//     // await prisma.$disconnect()
+//   })
 
 app.use(function (req, res, next) {
   next(createError(404))
 })
-
-if (process.env.NODE_ENV !== "production") {
-  const port = process.env.PORT || 4000
-  app.listen(port, () => {
-    console.log(`✅ API running locally on http://localhost:${port}`)
-  })
-}
 
 export default app

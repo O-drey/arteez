@@ -47,6 +47,7 @@ router.post("/", async (req, res) => {
 
     const { create } = usersMethods()
     const data = await create(newUser)
+    console.log("data from routes/users:", data)
     res.status(201).json(data)
   } catch (error) {
     console.dir(error)

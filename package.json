@@ -1,13 +1,16 @@
 {
+  "name": "arteez",
   "devDependencies": {
-    "turbo": "^2.9.6"
+    "nx": "22.6.5"
   },
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "nx run-many -t dev",
     "build": "vite build",
-    "test": "turbo run test",
-    "lint": "turbo run lint",
-    "check-types": "tsc --noEmit"
+    "test": "nx run test",
+    "lint": "nx run lint",
+    "check-types": "tsc --noEmit",
+    "kill:api": "kill -9 $(lsof -t -i:3000)",
+    "kill:frontend --verbose": "kill -9 $(lsof -t -i:5173)"
   },
   "packageManager": "npm@8.5.0",
   "workspaces": [

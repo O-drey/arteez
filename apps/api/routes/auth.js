@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { json, Router } from "express"
 import { PrismaClient } from "@prisma/client"
 import bcrypt from "bcrypt"
 
@@ -10,49 +10,43 @@ router.post("/", async (req, res) => {
     console.log("req.body :", req.body)
     const { identifier, password } = req.body
 
+    if (!identifier || !password) {
+      return res.status(400).json({ message: "Identifiants requis" })
+    }
+
     let user = await prisma.user.findUnique({
       where: { username: identifier },
     })
     console.log("user find by username : ", user)
 
     if (!user) {
-      const emailLower = identifier.toLowerCase()
-      console.log("emailLower : ", emailLower)
       user = await prisma.user.findUnique({
-        where: { email: emailLower },
+        where: { email: identifier.toLowerCase() },
       })
-
       console.log("user find by email : ", user)
     }
 
     if (!user)
-      res.json({
+      res.status(404).json({
         message:
           "Ce compte n'existe pas, vérifiez vos informations ou créez votre compte.",
       })
-    const match = await bcrypt.compare(password, user.password)
-    if (!match) {
-      console.log("Identifiants incorrectes. Vérifiez vos informations.")
-      res.json({
-        message: "Identifiants incorrectes. Vérifiez vos informations.",
-      })
-    }
 
     const isPasswordValid = await bcrypt.compare(password, user.password)
 
     if (!isPasswordValid) {
-      console.log("Mot de passe incorrect.")
-      return null
+      return res.status(401).json({
+        message: "Identifiants incorrectes. Vérifiez vos informations.",
+      })
     }
 
     console.log("Connexion réussie :", user.email)
-    const token = "123456azerty"
+    const token = process.env.TOKEN
     res.json({ token, userId: user.id })
     const auth = (req.headers.authorization = `Bearer ${token}`)
     return { auth, user: user.id }
   } catch (err) {
-    console.error("Erreur lors de la connexion :", err)
-    throw err
+    return res.status(500).json({ "Erreur server": err })
   }
 })
 
