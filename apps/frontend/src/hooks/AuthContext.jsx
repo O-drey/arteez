@@ -11,7 +11,8 @@ export const AuthProvider = ({ children }) => {
     const storedToken = localStorage.getItem("Bearer")
     const storedUserId = localStorage.getItem("user_id")
 
-    if (storedToken && storedUserId) {
+    if (!storedToken || !storedUserId) return
+    else {
       setToken(storedToken)
 
       const fetchUser = async () => {

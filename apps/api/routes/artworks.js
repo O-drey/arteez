@@ -40,7 +40,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET_KEY,
 })
 
-const upload = multer({ dest: "uploads/" })
+const upload = multer({ dest: "/tmp/uploads/" })
 
 router.post("/", upload.array("imgs", 6), async (req, res) => {
   try {
