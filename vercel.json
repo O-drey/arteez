@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "frontend": {
+      "root": "apps/frontend",
+      "buildCommand": "cd ../.. && npx nx build frontend"
+    },
+    "api": {
+      "root": "apps/api",
+      "buildCommand": "cd ../.. && npx nx build api"
+    }
+  }
+}
